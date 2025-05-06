@@ -7,6 +7,7 @@ Dans un monde industriel de plus en plus connecté, la surveillance en temps ré
 🧠 L’idée est de représenter virtuellement un environnement physique (ici, un système de capteurs), de capter les changements en temps réel, de réagir aux anomalies, et de garder une trace de tout ce qui se passe.
 
 🎯 Objectif du Projet:
+
 L’objectif principal est de mettre en place un système intelligent capable de simuler et surveiller la température dans un environnement industriel. Voici les fonctionnalités clés :
 
 🔁 Simuler un capteur de température qui génère des données entre 20°C et 40°C toutes les 10 secondes.

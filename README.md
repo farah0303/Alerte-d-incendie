@@ -45,9 +45,6 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 
 🌐 Pourquoi c’est important:
 Ce projet est une illustration concrète des technologies de l’IoT moderne, qui combinent temps réel, réactivité, persistance des données, et supervision intelligente. Il reflète :
-
-Le potentiel des architectures basées sur FIWARE.
-
-L’importance d’un monitoring intelligent dans les systèmes industriels.
-
-Et la simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker.
+-Le potentiel des architectures basées sur FIWARE.
+-L’importance d’un monitoring intelligent dans les systèmes industriels.
+-La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker.

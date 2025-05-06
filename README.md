@@ -30,22 +30,29 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 🟢 Orion Context Broker:
 
 👉 Centralise toutes les entités (capteurs) et leurs données.
+
 👉 Permet l’interaction via l’API NGSI pour gérer les informations en temps réel.
+
 
 🟣 MongoDB:
 
 👉 Sert de base de données de stockage historique.
+
 👉 Garde une trace complète de toutes les lectures de température.
+
 
 🔵 Cygnus:
 
 👉 Joue le rôle de pont entre Orion et MongoDB.
+
 👉 Écoute les changements dans Orion et transfère les données vers MongoDB.
+
 
 🔴 Flask :
 
 👉 Sert à recevoir des alertes en temps réel via une API HTTP POST.
 👉 Affiche les alertes de température dans les logs et peut être étendu pour effectuer des actions automatiques (comme envoyer un email ou une notification).
+
 
 🔄 Flux de Données:
 

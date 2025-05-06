@@ -9,17 +9,16 @@ Dans un monde industriel de plus en plus connecté, la surveillance en temps ré
 L’objectif principal est de mettre en place un système intelligent capable de simuler et surveiller la température dans un environnement industriel. Voici les fonctionnalités clés :
 
 🔁 Simuler un capteur de température qui génère des données entre 20°C et 40°C toutes les 10 secondes.
-
 🚨 Détecter toute température dépassant 30°C et déclencher une alerte immédiate.
-
 🧾 Enregistrer toutes les données dans une base MongoDB, grâce à Cygnus.
-
 🧠 Gérer dynamiquement les entités et les mesures avec Orion Context Broker via l’API NGSI v2.
 
 Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser, surveiller, alerter et stocker des données dans un système distribué, typique des architectures IoT industrielles.
 
 ⚙️ Architecture du Système:
-🧩 Composants Clés
+
+🧩 Composants Clés:
+
 🟢 Orion Context Broker
 👉 Centralise toutes les entités (capteurs) et leurs données.
 👉 Permet l’interaction via l’API NGSI pour gérer les informations en temps réel.
@@ -33,14 +32,11 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 👉 Écoute les changements dans Orion et transfère les données vers MongoDB.
 
 🔄 Flux de Données:
+
 🎛️ Un capteur virtuel génère une température aléatoire toutes les 10 secondes.
-
 📡 Ces données sont envoyées vers Orion Context Broker via des requêtes HTTP NGSI.
-
 📬 Cygnus est abonné à ces entités et reçoit les mises à jour de température.
-
 💾 Cygnus stocke automatiquement les données dans MongoDB.
-
 🚨 Lorsqu’une température dépasse le seuil de 30°C, une alerte est générée (par exemple dans les logs ou via une action externe à implémenter).
 
 🌐 Pourquoi c’est important:

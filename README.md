@@ -51,7 +51,11 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 🚨 Lorsqu’une température dépasse le seuil de 30°C, une alerte est générée (par exemple dans les logs ou via une action externe à implémenter).
 
 🌐 Pourquoi c’est important:
+
 Ce projet est une illustration concrète des technologies de l’IoT moderne, qui combinent temps réel, réactivité, persistance des données, et supervision intelligente. Il reflète :
+
 -Le potentiel des architectures basées sur FIWARE.
+
 -L’importance d’un monitoring intelligent dans les systèmes industriels.
+
 -La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker.

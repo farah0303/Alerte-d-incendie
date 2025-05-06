@@ -51,6 +51,7 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 🔴 Flask :
 
 👉 Sert à recevoir des alertes en temps réel via une API HTTP POST.
+
 👉 Affiche les alertes de température dans les logs et peut être étendu pour effectuer des actions automatiques (comme envoyer un email ou une notification).
 
 

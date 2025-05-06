@@ -1,4 +1,5 @@
 🌡️ Projet Digital Twin – Simulation de Capteurs de Température:
+
 🚀 Contexte:
 Dans un monde industriel de plus en plus connecté, la surveillance en temps réel des paramètres critiques comme la température devient essentielle. Ce projet propose une simulation réaliste d’un système de capteurs intelligents, s’appuyant sur des technologies modernes telles que Orion Context Broker, MongoDB et Cygnus, pour illustrer le concept puissant de Digital Twin (jumeau numérique).
 

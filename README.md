@@ -14,7 +14,7 @@ L’objectif principal est de mettre en place un système intelligent capable de
 
 🚨 Détecter toute température dépassant 30°C et déclencher une alerte immédiate via un serveur Flask.
 
-🧾 Enregistrer toutes les données dans une base MongoDB, sans passer par Cygnus, mais directement depuis l'application Flask.
+🧾 Enregistrer toutes les données dans une base MongoDB,  mais directement depuis l'application Flask.
 
 🧠 Gérer dynamiquement les entités et les mesures avec Orion Context Broker via l’API NGSI v2.
 
@@ -42,7 +42,7 @@ Sert à recevoir des alertes en temps réel via une API HTTP POST.
 
 Affiche les alertes de température dans les logs et peut être étendu pour effectuer des actions automatiques (comme envoyer un email ou une notification).
 
-Gère également l’insertion des données de température directement dans MongoDB sans Cygnus.
+Gère également l’insertion des données de température directement dans MongoDB .
 
 🔄 Flux de Données:
 
@@ -52,7 +52,7 @@ Gère également l’insertion des données de température directement dans Mon
 
 📬 Flask interroge régulièrement Orion pour récupérer les données de température mises à jour.
 
-💾 Flask stocke directement les données dans MongoDB, sans avoir besoin de Cygnus.
+💾 Flask stocke directement les données dans MongoDB, 
 
 🚨 Lorsqu’une température dépasse le seuil de 30°C, une alerte est envoyée au serveur Flask, qui l'affiche dans les logs.
 
@@ -64,4 +64,4 @@ Le potentiel des architectures basées sur FIWARE (Orion Context Broker).
 
 L’importance d’un monitoring intelligent dans les systèmes industriels.
 
-La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker et de technologies comme Flask, tout en se passant de Cygnus.
+La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker et de technologies comme Flask

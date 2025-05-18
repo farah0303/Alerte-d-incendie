@@ -320,19 +320,89 @@ volumes:
 
 ---
 
-## ✅ Conclusion
+Voici les sections **4. Process d'installation de la solution** et **5. Comment lancer l'application**, que tu peux ajouter directement à ton `README.md`.
 
-Grâce à ce fichier `docker-compose.yml`, tout le système est lancé en une seule commande :
+---
+
+## 4. 🛠️ Process d'installation de la solution
+
+Pour déployer et exécuter cette solution, nous utilisons **Docker Compose**, un outil permettant de gérer facilement des applications multi-conteneurs.
+
+### ✅ Prérequis
+
+Avant de commencer, assurez-vous d’avoir installé :
+
+- [Docker](https://www.docker.com/get-started/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+💡 Sur Windows, Docker Desktop inclut Docker Compose.
+
+### 📁 Structure du projet attendue
+
+```
+digital_twin/
+├── Dockerfile                  # Pour le simulateur de capteurs
+├── docker-compose.yml          # Configuration globale
+├── requirements.txt            # Dépendances Python pour le simulateur
+├── sensor_simulation.py        # Simule les capteurs
+├── flask_app/
+│   ├── Dockerfile              # Pour Flask
+│   ├── app.py                  # Code Flask
+│   └── requirements.txt        # Dépendances Flask
+```
+
+### 🔧 Installation
+
+1. Clonez ou téléchargez le dépôt :
+```bash
+git clone https://github.com/farah0303/Alerte-d-incendie.git
+cd Alerte-d-incendie
+```
+
+2. Vérifiez que tous les fichiers nécessaires sont présents dans le répertoire (`docker-compose.yml`, `sensor_simulation.py`, etc.).
+
+3. (Facultatif) Vous pouvez modifier les variables d’environnement dans le fichier `.env` ou directement dans `docker-compose.yml`.
+
+---
+
+## 5. ▶️ Comment lancer l'application
+
+Une fois le projet prêt, vous pouvez démarrer toute l’infrastructure avec une seule commande.
+
+### 🚀 Démarrage
+
+Depuis le répertoire racine du projet :
 
 ```bash
 docker-compose up --build
 ```
 
-Il configure automatiquement :
-- Une base de données MongoDB,
-- Un broker contextuel Orion,
-- Une application Flask pour la gestion des alertes,
-- Et une simulation de capteurs incendie.
+> ⏱️ À la première exécution, Docker télécharge les images nécessaires et construit les conteneurs personnalisés (`flask-app` et `sensor-simulation`). Cela peut prendre quelques minutes.
 
-Cela rend le projet **facile à déployer**, **réutilisable** et **extensible** à d’autres types de capteurs ou d’événements.
+### 📦 Détail du démarrage
+
+1. **MongoDB** démarre en premier.
+2. **Orion Context Broker** se connecte à MongoDB.
+3. **Flask App** démarre et vérifie qu’Orion est prêt via `/sync`.
+4. **Sensor Simulation** commence à envoyer des données à Orion toutes les 10 secondes.
+5. Si un seuil est dépassé, une alerte est envoyée à Flask et enregistrée dans MongoDB.
+
+
+### 🧪 Vérifier que tout fonctionne
+
+Après quelques secondes, vous pouvez vérifier :
+
+- **Orion** : http://localhost:1026/version → devrait afficher la version d’Orion.
+- **Flask** : http://localhost:5000/sync → synchronise les données depuis Orion.
+- **MongoDB** : accédez-y via un client comme MongoDB Compass à l’adresse `mongodb://localhost:27017`.
+
+---
+
+### 🔁 Arrêter l’application
+
+Pour arrêter l’application proprement :
+
+```bash
+docker-compose down
+```
+
 

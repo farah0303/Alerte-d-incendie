@@ -7,7 +7,7 @@ Dans un monde de plus en plus connecté, la détection précoce des risques d'in
 
 Ce projet propose une simulation réaliste d’un système de capteurs de fumée, s’appuyant sur des technologies modernes telles que **Orion Context Broker**, **MongoDB**, et **Flask**, pour illustrer le concept puissant de **Digital Twin (jumeau numérique)**.
 
----
+
 
 ## 🧠 Objectif du Projet
 
@@ -20,7 +20,7 @@ L’objectif principal est de mettre en place un système intelligent capable de
 
 Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser, surveiller, alerter et stocker des données dans un système distribué, typique des architectures IoT industrielles.
 
----
+
 
 ## ⚙️ Architecture du Système
 
@@ -49,7 +49,7 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 3. Flask reçoit une alerte lorsque le seuil critique est dépassé.
 4. Flask stocke directement les données dans MongoDB.
 
----
+
 
 ## 🌐 Pourquoi c’est important ?
 
@@ -59,7 +59,7 @@ Ce projet est une illustration concrète des technologies de l’IoT moderne, qu
 - L’importance d’un monitoring intelligent dans les systèmes industriels.
 - La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker et de technologies comme Flask.
 
----
+
 
 ## 📦 Modèles de données JSON utilisés
 
@@ -140,7 +140,7 @@ Le projet utilise plusieurs modèles de données au format **JSON** pour assurer
 
 Ces modèles assurent une intégration cohérente entre les services Docker tout en respectant les standards NGSI v2 de FIWARE.
 
----
+
 
 ## 📁 Fichier `docker-compose.yml`
 
@@ -180,7 +180,7 @@ volumes:
 
 > *(Les détails techniques des services sont inclus dans le fichier original si besoin d'être affichés ici)*
 
----
+
 
 ## 🌐 Réseau
 
@@ -194,7 +194,6 @@ networks:
         - subnet: 172.19.0.0/24
 ```
 
----
 
 ## 💾 Volumes
 
@@ -203,7 +202,7 @@ volumes:
   mongo-db: ~
 ```
 
----
+
 
 ## 4. 🛠️ Process d'installation de la solution
 
@@ -238,7 +237,7 @@ cd Alerte-d-incendie
 
 3. (Facultatif) Modifiez les variables d’environnement si nécessaire.
 
----
+
 
 ## 5. ▶️ Comment lancer l'application
 
@@ -250,7 +249,7 @@ docker-compose up --build
 
 > ⏱️ À la première exécution, Docker télécharge les images nécessaires et construit les conteneurs personnalisés (`flask-app` et `sensor-simulation`). Cela peut prendre quelques minutes.
 
----
+
 
 ### 🧪 Vérifier que tout fonctionne
 
@@ -258,7 +257,7 @@ docker-compose up --build
 - **Flask** : http://localhost:5000/sync
 - **MongoDB** : mongodb://localhost:27017
 
----
+
 
 ### 🔁 Arrêter l’application
 

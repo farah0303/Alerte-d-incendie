@@ -135,10 +135,13 @@ Le projet utilise plusieurs modèles de données au format **JSON** pour assurer
 Ces modèles assurent une intégration cohérente entre les services Docker tout en respectant les standards NGSI v2 de FIWARE.
 
 
+Voici **uniquement la partie explicative du fichier `docker-compose.yml`**, prête à être ajoutée dans ton `README.md` ou tout autre document :
+
+---
 
 ## 📁 Fichier `docker-compose.yml`
 
-Le fichier `docker-compose.yml` est au cœur du déploiement de notre projet. Il permet de définir et exécuter facilement **plusieurs services Docker interconnectés** : Orion, MongoDB, Flask et la simulation des capteurs.
+Le fichier `docker-compose.yml` est utilisé pour définir et orchestrer les différents services Docker nécessaires à notre projet de Digital Twin. Il permet de déployer facilement un environnement contenant **Orion Context Broker**, **MongoDB**, une application **Flask** et un simulateur de capteurs, tous interconnectés.
 
 ### 🔧 Structure générale
 
@@ -160,23 +163,132 @@ volumes:
   mongo-db: ~
 ```
 
----
+Ce fichier définit **quatre services principaux** :
+- **Orion Context Broker** : gestion des entités (capteurs).
+- **MongoDB** : stockage des alertes.
+- **Flask App** : serveur web pour recevoir les alertes.
+- **Sensor Simulation** : simulation des données envoyées aux capteurs.
+
+Ils sont connectés via un réseau Docker privé avec une configuration IP personnalisée.
+
 
 ### 📦 Services Détaillés
 
 #### 1. **Orion Context Broker**
 
+```yaml
+orion:
+  labels:
+    org.fiware: 'tutorial'
+  image: fiware/orion:${ORION_VERSION:-3.3.0}
+  hostname: orion
+  container_name: fiware-orion
+  depends_on:
+    - mongo-db
+  networks:
+      - default
+  ports:
+    - "${ORION_PORT:-1026}:${ORION_PORT:-1026}"
+  command: -dbhost mongo-db -logLevel DEBUG -noCache
+  healthcheck:
+    test: curl --fail -s http://orion:${ORION_PORT:-1026}/version || exit 1
+    interval: 5s
+```
+
+- Utilise l’image officielle de FIWARE Orion.
+- Dépend de MongoDB (`mongo-db`) comme base de données.
+- Disponible sur le port `1026`.
+- Configure Orion pour utiliser MongoDB en mode debug sans cache.
+- Vérifie sa disponibilité via `/version`.
+
+
+
 #### 2. **MongoDB**
+
+```yaml
+mongo-db:
+  labels:
+    org.fiware: 'tutorial'
+  image: mongo:${MONGO_DB_VERSION:-6.0}
+  hostname: mongo-db
+  container_name: db-mongo
+  expose:
+    - "${MONGO_DB_PORT:-27017}"
+  ports:
+    - "${MONGO_DB_PORT:-27017}:${MONGO_DB_PORT:-27017}"
+  networks:
+    - default
+  volumes:
+    - mongo-db:/data
+  healthcheck:
+    test: |
+      host=`hostname --ip-address || echo '127.0.0.1'`; 
+      mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+    interval: 5s
+```
+
+- Base de données utilisée par Orion et Flask.
+- Stocke les alertes générées par le système.
+- Persistance des données via un volume Docker.
+- Vérifie que la base est opérationnelle toutes les 5 secondes.
+
+
 
 #### 3. **Flask App**
 
+```yaml
+flask-app:
+  build: ./flask_app
+  container_name: flask-app
+  ports:
+    - "5000:5000"
+  depends_on:
+    - orion
+  networks:
+    - default
+  environment:
+    - FLASK_ENV=development
+  restart: on-failure:5
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:5000/sync"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+```
+
+- Application Flask qui reçoit les alertes et synchronise les données avec Orion.
+- Construite depuis le dossier `flask_app`.
+- Environnement de développement activé.
+- Redémarre automatiquement en cas d’échec.
+- Teste l’endpoint `/sync` pour vérifier si l’application est prête.
+
+
+
 #### 4. **Sensor Simulation**
 
-> *(Les détails techniques des services sont inclus dans le fichier original si besoin d'être affichés ici)*
+```yaml
+sensor-simulation:
+  build: .
+  container_name: sensor-simulation
+  depends_on:
+    - orion
+    - flask-app
+  networks:
+    - default
+  environment:
+    - ORION_URL=http://orion:1026/v2/op/update
+    - FLASK_ALERT_URL=http://flask-app:5000/alert
+  restart: always
+```
+
+- Simule trois capteurs envoyant des niveaux de fumée aléatoires.
+- Dépend du démarrage d’Orion et de Flask.
+- Variables d’environnement configurées pour communiquer avec ces deux services.
+- Redémarre toujours automatiquement.
 
 
 
-## 🌐 Réseau
+### 🌐 Réseau
 
 ```yaml
 networks:
@@ -188,14 +300,25 @@ networks:
         - subnet: 172.19.0.0/24
 ```
 
+- Tous les services partagent le même réseau Docker.
+- Communication entre services via leurs noms (`orion`, `flask-app`, etc.)
+- Configuration IP personnalisée avec sous-réseau `172.19.0.0/24`.
 
-## 💾 Volumes
+
+
+### 💾 Volumes
 
 ```yaml
 volumes:
   mongo-db: ~
 ```
 
+- Le volume `mongo-db` permet de persister les données MongoDB.
+- Garantit la sauvegarde des alertes en cas de redémarrage ou arrêt du conteneur.
+
+
+
+Souhaitez-vous que je vous fournisse cette section au format `.md` ou `.txt` prêt à télécharger ? 😊
 
 ## 🧪 Fonctionnement du projet
 

@@ -373,6 +373,7 @@ Une fois le projet prêt, vous pouvez démarrer toute l’infrastructure avec un
 Depuis le répertoire racine du projet :
 
 ```bash
+venv\Scripts\activate
 docker-compose up --build
 ```
 

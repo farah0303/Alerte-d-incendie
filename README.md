@@ -375,6 +375,7 @@ cd Alerte-d-incendie
 Depuis le répertoire racine du projet :
 
 ```bash
+venv\Scripts\activate
 docker-compose up --build
 ```
 
@@ -389,7 +390,7 @@ Après quelques secondes, vous pouvez vérifier le bon fonctionnement des servic
 - **Flask** : [http://localhost:5000/sync](http://localhost:5000/sync) → déclenche la synchronisation des données entre Orion et MongoDB.
 - **MongoDB** : `mongodb://localhost:27017` → accessible via un outil comme **MongoDB Compass** pour visualiser les alertes enregistrées.
 
-📁 **De plus, un dossier intitulé `screenshots` contient des captures d’écran illustrant le bon déroulement du projet**, notamment :
+📁 **De plus, un dossier intitulé `screen shots` contient des captures d’écran illustrant le bon déroulement du projet**, notamment :
 - L’interface de Flask affichant les alertes,
 - Les logs Docker confirmant l’envoi des données à Orion,
 - La base MongoDB avec les alertes stockées.

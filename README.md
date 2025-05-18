@@ -43,32 +43,6 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 - Gère également l’insertion des données directement dans MongoDB.
 
 
-## 🧪 Fonctionnement du projet
-
-Le fichier `sensor_simulation.py` joue un rôle central dans ce projet, en simulant **trois capteurs de fumée virtuels** (`SmokeSensor1`, `SmokeSensor2`, `SmokeSensor3`). Ces capteurs génèrent automatiquement des niveaux de fumée compris entre **0 et 100 %**, représentant une mesure aléatoire d’une situation réelle de détection de fumée.
-
-### 🔁 Déroulement du processus :
-
-1. **Initialisation des capteurs :**
-   - Le script commence par définir une liste de capteurs avec leurs identifiants uniques et leur type (`SmokeSensor`).
-   - Un seuil critique est également configuré (`SMOKE_LEVEL_THRESHOLD = 80`) pour déclencher une alerte en cas de niveau de fumée élevé.
-
-2. **Génération aléatoire :**
-   - À chaque itération, le script utilise la fonction `generate_smoke_level()` pour produire une valeur aléatoire entre 0 et 100, simulant la lecture d’un capteur physique.
-
-3. **Envoi vers Orion Context Broker :**
-   - Les données sont envoyées via une requête HTTP POST à l’API NGSI d’Orion (`http://orion:1026/v2/op/update`), sous forme de payload JSON.
-   - Ce payload contient :
-     - L’identifiant du capteur.
-     - La valeur simulée du niveau de fumée.
-     - Une date de création au format ISO 8601.
-
-4. **Détection d’anomalie :**
-   - Si la valeur générée dépasse le seuil défini, une alerte est immédiatement envoyée à Flask via une requête POST sur l’URL `http://flask-app:5000/alert`.
-   - Cette alerte inclut l’ID du capteur et le niveau de fumée mesuré.
-
-5. **Boucle infinie :**
-   - Le processus se répète toutes les **5 secondes**, permettant une surveillance continue des niveaux de fumée.
 
 
 ## 🌐 Pourquoi c’est important ?
@@ -223,6 +197,32 @@ volumes:
 ```
 
 
+## 🧪 Fonctionnement du projet
+
+Le fichier `sensor_simulation.py` joue un rôle central dans ce projet, en simulant **trois capteurs de fumée virtuels** (`SmokeSensor1`, `SmokeSensor2`, `SmokeSensor3`). Ces capteurs génèrent automatiquement des niveaux de fumée compris entre **0 et 100 %**, représentant une mesure aléatoire d’une situation réelle de détection de fumée.
+
+### 🔁 Déroulement du processus :
+
+1. **Initialisation des capteurs :**
+   - Le script commence par définir une liste de capteurs avec leurs identifiants uniques et leur type (`SmokeSensor`).
+   - Un seuil critique est également configuré (`SMOKE_LEVEL_THRESHOLD = 80`) pour déclencher une alerte en cas de niveau de fumée élevé.
+
+2. **Génération aléatoire :**
+   - À chaque itération, le script utilise la fonction `generate_smoke_level()` pour produire une valeur aléatoire entre 0 et 100, simulant la lecture d’un capteur physique.
+
+3. **Envoi vers Orion Context Broker :**
+   - Les données sont envoyées via une requête HTTP POST à l’API NGSI d’Orion (`http://orion:1026/v2/op/update`), sous forme de payload JSON.
+   - Ce payload contient :
+     - L’identifiant du capteur.
+     - La valeur simulée du niveau de fumée.
+     - Une date de création au format ISO 8601.
+
+4. **Détection d’anomalie :**
+   - Si la valeur générée dépasse le seuil défini, une alerte est immédiatement envoyée à Flask via une requête POST sur l’URL `http://flask-app:5000/alert`.
+   - Cette alerte inclut l’ID du capteur et le niveau de fumée mesuré.
+
+5. **Boucle infinie :**
+   - Le processus se répète toutes les **5 secondes**, permettant une surveillance continue des niveaux de fumée.
 
 ## 4. 🛠️ Process d'installation de la solution
 

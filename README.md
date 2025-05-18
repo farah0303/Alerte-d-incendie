@@ -67,8 +67,12 @@ L’importance d’un monitoring intelligent dans les systèmes industriels.
 La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker et de technologies comme Flask.
 
 
-Le projet utilise plusieurs modèles de données au format JSON pour assurer la communication entre les différents services. Le premier modèle est utilisé par le simulateur de capteurs (sensor_simulation.py) pour envoyer des données à Orion Context Broker , en représentant trois capteurs de fumée :
+Ah désolé pour la confusion ! Voici un **paragraphe corrigé** incluant les 3 capteurs dans le modèle JSON utilisé par le simulateur :
 
+---
+
+Le projet utilise plusieurs modèles de données au format **JSON** pour assurer la communication entre les différents services. Le premier modèle est utilisé par le simulateur de capteurs (`sensor_simulation.py`) pour envoyer des données à **Orion Context Broker**, en représentant trois capteurs de fumée :
+```json
 {
   "actionType": "append",
   "entities": [
@@ -116,16 +120,16 @@ Le projet utilise plusieurs modèles de données au format JSON pour assurer la 
     }
   ]
 }
-
+```
 Ce format permet d’ajouter ou de mettre à jour les entités dans Orion. Lorsqu’un niveau de fumée dépasse un seuil prédéfini, une alerte est envoyée à l’application Flask via ce modèle :
-
+```json
 {
   "id": "SmokeSensor3",
   "smokeLevel": 82.1
 }
-
-Enfin, l’application Flask stocke ces alertes dans MongoDB sous forme de documents structurés comme suit :
-
+```
+Enfin, l’application Flask stocke ces alertes dans **MongoDB** sous forme de documents structurés comme suit :
+```json
 {
   "_id": "ObjectId(...)",
   "id": "SmokeSensor3",
@@ -133,8 +137,8 @@ Enfin, l’application Flask stocke ces alertes dans MongoDB sous forme de docum
   "smokeLevel": 82.1,
   "timestamp": "2025-04-05T12:00:00Z"
 }
-
-Voici une **mise à jour de ton README**, incluant une **section détaillée sur le fichier `docker-compose.yml`**. Tu peux simplement copier/coller cette section dans ton fichier `README.md`.
+```
+Ces modèles JSON assurent une intégration cohérente et fluide entre les services Docker (simulateur, Orion, Flask et MongoDB), tout en respectant les standards NGSI v2 de FIWARE.
 
 ---
 

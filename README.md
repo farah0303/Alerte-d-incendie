@@ -136,8 +136,6 @@ Enfin, l’application Flask stocke ces alertes dans **MongoDB** sous forme de d
 ```
 Ces modèles JSON assurent une intégration cohérente et fluide entre les services Docker (simulateur, Orion, Flask et MongoDB), tout en respectant les standards NGSI v2 de FIWARE.
 
----
-
 ## 📁 Fichier `docker-compose.yml`
 
 Le fichier `docker-compose.yml` est au cœur du déploiement de notre projet. Il permet de définir et exécuter facilement **plusieurs services Docker interconnectés** : Orion Context Broker, MongoDB, Flask (application d’alerte) et la simulation des capteurs.
@@ -338,6 +336,3 @@ Il configure automatiquement :
 
 Cela rend le projet **facile à déployer**, **réutilisable** et **extensible** à d’autres types de capteurs ou d’événements.
 
---- 
-
-Souhaites-tu que je t’aide à générer une version PDF ou HTML de ton README ? 😊

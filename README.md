@@ -64,4 +64,73 @@ Le potentiel des architectures basées sur FIWARE (Orion Context Broker).
 
 L’importance d’un monitoring intelligent dans les systèmes industriels.
 
-La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker et de technologies comme Flask
+La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker et de technologies comme Flask.
+
+
+Le projet utilise plusieurs modèles de données au format JSON pour assurer la communication entre les différents services. Le premier modèle est utilisé par le simulateur de capteurs (sensor_simulation.py) pour envoyer des données à Orion Context Broker , en représentant trois capteurs de fumée :
+
+{
+  "actionType": "append",
+  "entities": [
+    {
+      "id": "SmokeSensor1",
+      "type": "SmokeSensor",
+      "smokeLevel": {
+        "value": 75.3,
+        "type": "Number",
+        "metadata": {
+          "dateCreated": {
+            "type": "DateTime",
+            "value": "2025-04-05T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "id": "SmokeSensor2",
+      "type": "SmokeSensor",
+      "smokeLevel": {
+        "value": 68.9,
+        "type": "Number",
+        "metadata": {
+          "dateCreated": {
+            "type": "DateTime",
+            "value": "2025-04-05T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "id": "SmokeSensor3",
+      "type": "SmokeSensor",
+      "smokeLevel": {
+        "value": 82.1,
+        "type": "Number",
+        "metadata": {
+          "dateCreated": {
+            "type": "DateTime",
+            "value": "2025-04-05T12:00:00Z"
+          }
+        }
+      }
+    }
+  ]
+}
+
+Ce format permet d’ajouter ou de mettre à jour les entités dans Orion. Lorsqu’un niveau de fumée dépasse un seuil prédéfini, une alerte est envoyée à l’application Flask via ce modèle :
+
+{
+  "id": "SmokeSensor3",
+  "smokeLevel": 82.1
+}
+
+Enfin, l’application Flask stocke ces alertes dans MongoDB sous forme de documents structurés comme suit :
+
+{
+  "_id": "ObjectId(...)",
+  "id": "SmokeSensor3",
+  "type": "SmokeSensor",
+  "smokeLevel": 82.1,
+  "timestamp": "2025-04-05T12:00:00Z"
+}
+

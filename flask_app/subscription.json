@@ -1,0 +1,24 @@
+{
+  "description": "Alerte si niveau de fumée > 50%",
+  "subject": {
+    "entities": [
+      {
+        "idPattern": ".*",
+        "type": "SmokeSensor"
+      }
+    ],
+    "condition": {
+      "attrs": ["smokeLevel"],
+      "expression": {
+        "q": "smokeLevel>50"
+      }
+    }
+  },
+  "notification": {
+    "http": {
+      "url": "http://flask-app:5000/alert"
+    },
+    "attrs": ["smokeLevel", "id"]
+  },
+  "throttling": 10
+}

@@ -137,7 +137,7 @@ Ces modèles assurent une intégration cohérente entre les services Docker tout
 
 Voici **uniquement la partie explicative du fichier `docker-compose.yml`**, prête à être ajoutée dans ton `README.md` ou tout autre document :
 
----
+
 
 ## 📁 Fichier `docker-compose.yml`
 

@@ -42,9 +42,6 @@ Ce projet démontre comment un Digital Twin peut être utilisé pour automatiser
 - Affiche les alertes d'incendie dans les logs et peut être étendu pour effectuer des actions automatiques (comme envoyer un email ou une notification).
 - Gère également l’insertion des données directement dans MongoDB.
 
-Bien sûr ! Voici un **paragraphe détaillé** que tu peux ajouter à ton `README.md` (ou dans la section appropriée de ton document), pour expliquer **comment `sensor_simulation.py` génère des valeurs pour les capteurs**, ainsi que **le déroulement et le fonctionnement global de l’application**.
-
----
 
 ## 🧪 Fonctionnement du projet
 

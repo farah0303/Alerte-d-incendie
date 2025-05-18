@@ -163,15 +163,6 @@ volumes:
   mongo-db: ~
 ```
 
-Ce fichier définit **quatre services principaux** :
-- **Orion Context Broker** : gestion des entités (capteurs).
-- **MongoDB** : stockage des alertes.
-- **Flask App** : serveur web pour recevoir les alertes.
-- **Sensor Simulation** : simulation des données envoyées aux capteurs.
-
-Ils sont connectés via un réseau Docker privé avec une configuration IP personnalisée.
-
-
 ### 📦 Services Détaillés
 
 #### 1. **Orion Context Broker**
@@ -316,9 +307,6 @@ volumes:
 - Le volume `mongo-db` permet de persister les données MongoDB.
 - Garantit la sauvegarde des alertes en cas de redémarrage ou arrêt du conteneur.
 
-
-
-Souhaitez-vous que je vous fournisse cette section au format `.md` ou `.txt` prêt à télécharger ? 😊
 
 ## 🧪 Fonctionnement du projet
 

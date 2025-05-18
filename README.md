@@ -134,3 +134,210 @@ Enfin, l’application Flask stocke ces alertes dans MongoDB sous forme de docum
   "timestamp": "2025-04-05T12:00:00Z"
 }
 
+Voici une **mise à jour de ton README**, incluant une **section détaillée sur le fichier `docker-compose.yml`**. Tu peux simplement copier/coller cette section dans ton fichier `README.md`.
+
+---
+
+## 📁 Fichier `docker-compose.yml`
+
+Le fichier `docker-compose.yml` est au cœur du déploiement de notre projet. Il permet de définir et exécuter facilement **plusieurs services Docker interconnectés** : Orion Context Broker, MongoDB, Flask (application d’alerte) et la simulation des capteurs.
+
+### 🔧 Structure générale
+
+```yaml
+version: "3.8"
+services:
+  orion:
+    ...
+  mongo-db:
+    ...
+  flask-app:
+    ...
+  sensor-simulation:
+    ...
+networks:
+  default:
+    ...
+volumes:
+  mongo-db: ~
+```
+
+Ce fichier définit **quatre services principaux** :
+
+- **Orion Context Broker** : gestion du contexte des entités (capteurs).
+- **MongoDB** : base de données pour stocker les alertes.
+- **Flask App** : serveur web qui gère les alertes et la synchronisation avec Orion.
+- **Sensor Simulation** : simulateur de capteurs envoyant des niveaux de fumée.
+
+Tous ces services sont connectés via un réseau Docker par défaut avec une configuration IP personnalisée.
+
+---
+
+### 📦 Services Détaillés
+
+#### 1. **Orion Context Broker**
+
+```yaml
+orion:
+  labels:
+    org.fiware: 'tutorial'
+  image: fiware/orion:${ORION_VERSION:-3.3.0}
+  hostname: orion
+  container_name: fiware-orion
+  depends_on:
+    - mongo-db
+  networks:
+      - default
+  ports:
+    - "${ORION_PORT:-1026}:${ORION_PORT:-1026}"
+  command: -dbhost mongo-db -logLevel DEBUG -noCache
+  healthcheck:
+    test: curl --fail -s http://orion:${ORION_PORT:-1026}/version || exit 1
+    interval: 5s
+```
+
+- **Rôle** : Gestion centralisée des entités (ex: capteurs).
+- **Dépendance** : MongoDB (`mongo-db`)
+- **Port** : Disponible sur `http://localhost:1026`
+- **Commande** : Utilise MongoDB comme base de données et active les logs détaillés.
+- **Healthcheck** : Teste `/version` toutes les 5 secondes pour vérifier si le service est actif.
+
+---
+
+#### 2. **MongoDB**
+
+```yaml
+mongo-db:
+  labels:
+    org.fiware: 'tutorial'
+  image: mongo:${MONGO_DB_VERSION:-6.0}
+  hostname: mongo-db
+  container_name: db-mongo
+  expose:
+    - "${MONGO_DB_PORT:-27017}"
+  ports:
+    - "${MONGO_DB_PORT:-27017}:${MONGO_DB_PORT:-27017}"
+  networks:
+    - default
+  volumes:
+    - mongo-db:/data
+  healthcheck:
+    test: |
+      host=`hostname --ip-address || echo '127.0.0.1'`; 
+      mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+    interval: 5s
+```
+
+- **Rôle** : Stockage persistant des alertes reçues par Flask.
+- **Volume** : `/data` est persisté via un volume Docker pour éviter la perte de données.
+- **Port** : Disponible sur `27017`.
+- **Healthcheck** : Vérifie que la base est prête à accepter les connexions.
+
+---
+
+#### 3. **Flask App**
+
+```yaml
+flask-app:
+  build: ./flask_app
+  container_name: flask-app
+  ports:
+    - "5000:5000"
+  depends_on:
+    - orion
+  networks:
+    - default
+  environment:
+    - FLASK_ENV=development
+  restart: on-failure:5
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:5000/sync"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+```
+
+- **Rôle** : Réception des alertes de niveau de fumée trop élevé et synchronisation avec Orion.
+- **Build** : Construit depuis le sous-dossier `flask_app`.
+- **Port** : Disponible sur `http://localhost:5000`.
+- **Environnement** : Mode développement activé.
+- **Healthcheck** : Vérifie l’endpoint `/sync` toutes les 10 secondes.
+
+---
+
+#### 4. **Sensor Simulation**
+
+```yaml
+sensor-simulation:
+  build: .
+  container_name: sensor-simulation
+  depends_on:
+    - orion
+    - flask-app
+  networks:
+    - default
+  environment:
+    - ORION_URL=http://orion:1026/v2/op/update
+    - FLASK_ALERT_URL=http://flask-app:5000/alert
+  restart: always
+```
+
+- **Rôle** : Simule trois capteurs envoyant des niveaux de fumée aléatoires.
+- **Dépendances** : Orion et Flask doivent être démarrés avant lui.
+- **Build** : Construit depuis le répertoire racine.
+- **Variables d’environnement** :
+  - `ORION_URL` : URL de mise à jour d’Orion.
+  - `FLASK_ALERT_URL` : URL de notification en cas d’alerte.
+- **Restart policy** : Redémarre automatiquement si le conteneur s’arrête.
+
+---
+
+### 🌐 Réseau
+
+```yaml
+networks:
+  default:
+    labels:
+      org.fiware: 'tutorial'
+    ipam:
+      config:
+        - subnet: 172.19.0.0/24
+```
+
+- Les services communiquent entre eux via un réseau Docker privé.
+- Sous-réseau configuré : `172.19.0.0/24`.
+- Chaque service peut atteindre les autres par leur nom DNS (`orion`, `flask-app`, etc.)
+
+---
+
+### 💾 Volumes
+
+```yaml
+volumes:
+  mongo-db: ~
+```
+
+- Un volume nommé `mongo-db` est utilisé pour persister les données MongoDB.
+- Cela garantit que les alertes ne soient pas perdues en cas d’arrêt ou de redémarrage du conteneur.
+
+---
+
+## ✅ Conclusion
+
+Grâce à ce fichier `docker-compose.yml`, tout le système est lancé en une seule commande :
+
+```bash
+docker-compose up --build
+```
+
+Il configure automatiquement :
+- Une base de données MongoDB,
+- Un broker contextuel Orion,
+- Une application Flask pour la gestion des alertes,
+- Et une simulation de capteurs incendie.
+
+Cela rend le projet **facile à déployer**, **réutilisable** et **extensible** à d’autres types de capteurs ou d’événements.
+
+--- 
+
+Souhaites-tu que je t’aide à générer une version PDF ou HTML de ton README ? 😊

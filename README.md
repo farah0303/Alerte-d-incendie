@@ -67,10 +67,6 @@ L’importance d’un monitoring intelligent dans les systèmes industriels.
 La simplicité avec laquelle on peut simuler un Digital Twin efficace à l’aide de conteneurs Docker et de technologies comme Flask.
 
 
-Ah désolé pour la confusion ! Voici un **paragraphe corrigé** incluant les 3 capteurs dans le modèle JSON utilisé par le simulateur :
-
----
-
 Le projet utilise plusieurs modèles de données au format **JSON** pour assurer la communication entre les différents services. Le premier modèle est utilisé par le simulateur de capteurs (`sensor_simulation.py`) pour envoyer des données à **Orion Context Broker**, en représentant trois capteurs de fumée :
 ```json
 {
